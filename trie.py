@@ -69,6 +69,16 @@ class PrefixTree:
         for letter in node.children:
             return self.__child_words_for(node.children[letter], words)
 
+    def __str__(self) -> str:
+        result: str = ''
+
+        for node in self.nodes:
+            result += f'{node.text}\n'
+            if len(result) >= 100:
+                break
+
+        return result
+
 
 def main():
     main_tree = PrefixTree()
