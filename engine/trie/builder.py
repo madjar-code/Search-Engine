@@ -30,17 +30,13 @@ class TrieBuilder:
 def main() -> None:
     prefix_tree: PrefixTree = PrefixTree()
     builder = TrieBuilder(prefix_tree,
-                          'resources/word_list.txt',
-                          'resources/trie')
+                          'engine/resources/word_list.txt',
+                          'engine/resources/trie')
     builder.add_words_to_tree()
     builder.save_tree()
-    print(prefix_tree, end='\n\n\n')
 
-    with open('resources/trie', 'rb') as trie_file:
+    with open('engine/resources/trie', 'rb') as trie_file:
         trie = pickle.load(trie_file)
-
-    print(trie)
-    
 
 
 if __name__ == '__main__':
