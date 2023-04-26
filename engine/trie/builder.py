@@ -33,10 +33,8 @@ def main() -> None:
                           'engine/resources/word_list.txt',
                           'engine/resources/trie')
     builder.add_words_to_tree()
-    builder.save_tree()
-
-    with open('engine/resources/trie', 'rb') as trie_file:
-        trie = pickle.load(trie_file)
+    print(prefix_tree)
+    # builder.save_tree()
 
 
 if __name__ == '__main__':

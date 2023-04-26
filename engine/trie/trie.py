@@ -1,16 +1,23 @@
-from typing import List
-import networkx as nx
+from typing import (
+    List,
+    Dict,
+    TypeAlias,
+    Optional
+)
 
 
-PREFIX_COLOR = 'yellow'
-WORD_COLOR = 'blue'
-PREFIX_TYPE = 0
-WORD_TYPE = 1
+# PREFIX_COLOR = 'yellow'
+# WORD_COLOR = 'blue'
+# PREFIX_TYPE = 0
+# WORD_TYPE = 1
 
-TYPE_COLOR = {
-    WORD_TYPE: WORD_COLOR,
-    PREFIX_TYPE: PREFIX_COLOR
-}
+# TYPE_COLOR = {
+#     WORD_TYPE: WORD_COLOR,
+#     PREFIX_TYPE: PREFIX_COLOR
+# }
+
+
+CharType: TypeAlias = str
 
 class Node:
     """
@@ -18,32 +25,31 @@ class Node:
     """
     
     def __init__(self, text='') -> None:
-        self.text = text
-        self.children = dict()
-        self.is_word = False
+        self.text: str = text
+        self.children: Dict[CharType, Node] = {}
+        self.is_word: bool = False
 
 
 class PrefixTree:
     def __init__(self):
-        self.root = Node()
-        self.visual_graph = nx.DiGraph()
-        self.nodes = [self.root,]
+        self.root: Node = Node()
+        self.nodes: List[Node] = [self.root,]
     
     def insert(self, word: str) -> None:
-        current = self.root
+        current: Node = self.root
         
         for i, char in enumerate(word):
             if char not in current.children:
-                prefix = word[: i+1]
+                prefix: str = word[:i+1]
                 new_node = Node(prefix)
-                current.children[char] = new_node
                 self.nodes.append(new_node)
-            current = current.children[char]
+                current.children[char] = new_node
+            current: Node = current.children[char]
         current.is_word = True
 
-    def find(self, word: str) -> Node:
-        current = self.root
-        
+    def find(self, word: str) -> Optional[Node]:
+        current: Node = self.root
+
         for char in word:
             if char not in current.children:
                 return None
@@ -51,10 +57,10 @@ class PrefixTree:
         return current if current.is_word else None
 
     def starts_with(self, prefix: str) -> List[str]:
-        words = list()
+        words = List[str]
         current = self.root
         
-        for i, char in enumerate(prefix):
+        for char in prefix:
             if char not in current.children:
                 return list()
             current = current.children[char]
@@ -62,7 +68,8 @@ class PrefixTree:
         self.__child_words_for(current, words)
         return words
     
-    def __child_words_for(self, node, words) -> None:
+    def __child_words_for(self, node: Node,
+                          words: List[str]) -> None:
         if node.is_word:
             words.append(node.text)
 
@@ -78,11 +85,3 @@ class PrefixTree:
                 break
 
         return result
-
-
-def main():
-    main_tree = PrefixTree()
-
-
-if __name__ == '__main__':
-    main()
