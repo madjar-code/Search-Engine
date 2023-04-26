@@ -29,6 +29,10 @@ class Node:
         self.children: Dict[CharType, Node] = {}
         self.is_word: bool = False
 
+    def add_counter(self) -> None:
+        if self.is_word:
+            self.counter = 0
+
 
 class PrefixTree:
     def __init__(self):
@@ -46,6 +50,7 @@ class PrefixTree:
                 current.children[char] = new_node
             current: Node = current.children[char]
         current.is_word = True
+        current.add_counter()
 
     def find(self, word: str) -> Optional[Node]:
         current: Node = self.root
@@ -54,10 +59,14 @@ class PrefixTree:
             if char not in current.children:
                 return None
             current = current.children[char]
-        return current if current.is_word else None
+        result_node: Node = current
+
+        if result_node.is_word:
+            result_node.counter += 1
+            return result_node
 
     def starts_with(self, prefix: str) -> List[str]:
-        words = List[str]
+        words: List[str] = []
         current = self.root
         
         for char in prefix:

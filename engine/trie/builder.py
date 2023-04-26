@@ -33,7 +33,8 @@ def main() -> None:
                           'engine/resources/word_list.txt',
                           'engine/resources/trie')
     builder.add_words_to_tree()
-    print(prefix_tree)
+    result_node = prefix_tree.find('app')
+    print(result_node.counter)
     # builder.save_tree()
 
 
